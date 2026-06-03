@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>XMLFlow — E-Publication Automation</title>
+  <meta name="description" content="Automated XML tagging for e-publications with OCR support and client-configurable tag profiles">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+
+  <!-- ===== SIDEBAR ===== -->
+  <aside id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
+        </svg>
+      </div>
+      <div class="logo-title">XMLFlow</div>
+      <div class="logo-subtitle">E-Publication Automation</div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-label">Main</div>
+      <button class="nav-item active" data-screen="home" onclick="navigate('home')">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+        Dashboard
+      </button>
+
+      <div class="nav-label">Workflow</div>
+      <button class="nav-item" data-screen="upload" onclick="navigate('upload')">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+        New Project
+      </button>
+
+      <button class="nav-item" data-screen="profiles" onclick="navigate('profiles')">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        Client Profiles
+        <span class="nav-badge" id="profiles-count">0</span>
+      </button>
+
+      <button class="nav-item hidden" id="nav-review" data-screen="review" onclick="navigate('review')">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+        Review &amp; Edit
+      </button>
+
+      <button class="nav-item hidden" id="nav-output" data-screen="output" onclick="navigate('output')">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+        XML Output
+      </button>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="user-avatar">XF</div>
+        <div>
+          <div class="user-name">XMLFlow</div>
+          <div class="user-role">E-Pub Automation</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main id="content">
+
+    <!-- ── HOME SCREEN ── -->
+    <div id="screen-home" class="screen active">
+      <div class="screen-header">
+        <div>
+          <div class="screen-title">Dashboard</div>
+          <div class="screen-subtitle">XML E-Publication Automation Tool</div>
+        </div>
+        <button class="btn btn-primary" onclick="navigate('upload')">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+          New Project
+        </button>
+      </div>
+      <div class="screen-body">
+        <div class="home-hero">
+          <div class="hero-content">
+            <div class="hero-badge">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+              Powered by OCR &amp; AI Classification
+            </div>
+            <h1 class="hero-title">Automate Your<br><span>XML Tagging</span> Process</h1>
+            <p class="hero-desc">Upload PDFs, run OCR, and automatically generate structured XML with client-specific tags. Supports both scanned and digital e-publications.</p>
+            <div class="hero-actions">
+              <button class="btn btn-primary btn-lg" onclick="navigate('upload')">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+                Upload PDF
+              </button>
+              <button class="btn btn-secondary btn-lg" onclick="navigate('profiles')">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
+                Manage Profiles
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon" style="background:rgba(79,70,229,0.15)">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="#818cf8" stroke-width="2" style="width:18px;height:18px"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+            </div>
+            <div class="stat-value" id="stat-projects">0</div>
+            <div class="stat-label">Projects Processed</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon" style="background:rgba(16,185,129,0.15)">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="#34d399" stroke-width="2" style="width:18px;height:18px"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0"/></svg>
+            </div>
+            <div class="stat-value" id="stat-profiles">0</div>
+            <div class="stat-label">Client Profiles</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon" style="background:rgba(245,158,11,0.15)">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="#fbbf24" stroke-width="2" style="width:18px;height:18px"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+            </div>
+            <div class="stat-value" id="stat-pages">0</div>
+            <div class="stat-label">Pages Processed</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon" style="background:rgba(124,58,237,0.15)">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="#a78bfa" stroke-width="2" style="width:18px;height:18px"><path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+            </div>
+            <div class="stat-value" id="stat-tags">0</div>
+            <div class="stat-label">Tags Generated</div>
+          </div>
+        </div>
+
+        <div class="section-title">How It Works</div>
+        <div class="workflow-steps">
+          <div class="workflow-step" onclick="navigate('profiles')">
+            <div class="step-num">1</div>
+            <div class="step-name">Setup Profile</div>
+            <div class="step-desc">Upload client's tag reference document</div>
+          </div>
+          <div class="workflow-step" onclick="navigate('upload')">
+            <div class="step-num">2</div>
+            <div class="step-name">Upload PDF</div>
+            <div class="step-desc">Drag &amp; drop your publication PDF</div>
+          </div>
+          <div class="workflow-step">
+            <div class="step-num">3</div>
+            <div class="step-name">OCR &amp; Extract</div>
+            <div class="step-desc">Auto-detect digital or scanned pages</div>
+          </div>
+          <div class="workflow-step">
+            <div class="step-num">4</div>
+            <div class="step-name">Review &amp; Edit</div>
+            <div class="step-desc">Correct any classification errors</div>
+          </div>
+          <div class="workflow-step">
+            <div class="step-num">5</div>
+            <div class="step-name">Export XML</div>
+            <div class="step-desc">Download tagged XML body content</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── UPLOAD SCREEN ── -->
+    <div id="screen-upload" class="screen">
+      <div class="screen-header">
+        <div>
+          <div class="screen-title">New Project</div>
+          <div class="screen-subtitle">Upload a PDF to begin the XML tagging process</div>
+        </div>
+      </div>
+      <div class="screen-body">
+        <div id="upload-drop-zone" class="upload-area"
+             onclick="document.getElementById('pdf-input').click()"
+             ondragover="handleDragOver(event)"
+             ondragleave="handleDragLeave(event)"
+             ondrop="handleDrop(event)">
+          <input type="file" id="pdf-input" accept=".pdf" style="display:none" onchange="handleFileSelect(event)">
+          <div class="upload-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+          </div>
+          <div class="upload-title">Drop your PDF here</div>
+          <div class="upload-desc">or click to browse and select a file</div>
+          <div class="upload-hint">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="width:11px;height:11px"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            Supports both digital and scanned PDFs &nbsp;•&nbsp; Max recommended: 100 pages
+          </div>
+        </div>
+
+        <div id="file-info-card" class="file-info-card hidden">
+          <div class="file-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+          </div>
+          <div style="flex:1;min-width:0">
+            <div class="file-name" id="file-name-display">document.pdf</div>
+            <div class="file-meta" id="file-meta-display">Analyzing...</div>
+          </div>
+          <span class="file-type-badge" id="file-type-badge">Analyzing</span>
+          <button class="btn btn-ghost btn-sm" onclick="clearFile()" title="Remove file">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+          </button>
+        </div>
+
+        <div id="profile-selector-section" class="profile-selector hidden">
+          <div class="profile-selector-title">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="width:13px;height:13px"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+            Select Client Tag Profile
+          </div>
+          <div id="profile-grid" class="profile-grid"></div>
+          <div style="margin-top:10px">
+            <button class="btn btn-ghost btn-sm" onclick="navigate('profiles')">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="width:13px;height:13px"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+              Create New Profile
+            </button>
+          </div>
+        </div>
+
+        <div id="process-btn-container" class="hidden" style="margin-top:18px">
+          <button class="btn btn-primary btn-lg" onclick="startProcessing()" id="process-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/></svg>
+            Start Processing
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── PROCESSING SCREEN ── -->
+    <div id="screen-processing" class="screen">
+      <div class="screen-header">
+        <div>
+          <div class="screen-title">Processing</div>
+          <div class="screen-subtitle" id="processing-subtitle">Initializing...</div>
+        </div>
+        <button class="btn btn-secondary" onclick="cancelProcessing()">Cancel</button>
+      </div>
+      <div class="screen-body" style="padding:20px 24px">
+        <div class="processing-layout" style="height:calc(100vh - 148px)">
+          <div class="processing-preview">
+            <div class="card-header">
+              <span class="card-title">Page Preview</span>
+              <span id="processing-page-info" class="text-sm text-muted">—</span>
+            </div>
+            <div class="processing-canvas-wrap">
+              <canvas id="processing-canvas"></canvas>
+            </div>
+            <div class="progress-section">
+              <div class="progress-label">
+                <span id="progress-label-text">Initializing...</span>
+                <span id="progress-pct">0%</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill" id="main-progress" style="width:0%"></div>
+              </div>
+            </div>
+          </div>
+          <div class="processing-log">
+            <div class="card-header">
+              <span class="card-title">Processing Log</span>
+              <span class="text-sm text-muted" id="log-count">0 entries</span>
+            </div>
+            <div class="log-list" id="log-list"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── REVIEW SCREEN ── -->
+    <div id="screen-review" class="screen">
+      <div class="screen-header">
+        <div>
+          <div class="screen-title">Review &amp; Edit</div>
+          <div class="screen-subtitle">Verify AI classifications and make corrections before generating XML</div>
+        </div>
+        <div style="display:flex;gap:10px">
+          <button class="btn btn-secondary" onclick="navigate('upload')">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+            Back
+          </button>
+          <button class="btn btn-primary" onclick="generateXML()">
+            Generate XML
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="screen-body" style="padding:20px 24px">
+        <div class="review-layout" style="height:calc(100vh - 148px)">
+          <div class="review-panel">
+            <div class="review-panel-header">
+              <span class="review-panel-title">Page Image</span>
+              <div class="page-nav">
+                <button onclick="prevReviewPage()">&#8249; Prev</button>
+                <span id="review-page-info">Page 1 of 1</span>
+                <button onclick="nextReviewPage()">Next &#8250;</button>
+              </div>
+            </div>
+            <div style="flex:1;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#000">
+              <canvas id="review-canvas" style="max-width:100%;max-height:100%;object-fit:contain"></canvas>
+            </div>
+          </div>
+          <div class="review-panel">
+            <div class="review-panel-header">
+              <span class="review-panel-title">Content Blocks</span>
+              <span class="text-sm text-muted" id="blocks-count">0 blocks</span>
+            </div>
+            <div class="review-panel-body" id="blocks-list"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── PROFILES SCREEN ── -->
+    <div id="screen-profiles" class="screen">
+      <div class="screen-header">
+        <div>
+          <div class="screen-title">Client Profiles</div>
+          <div class="screen-subtitle">Manage client tag mapping configurations — upload Word, Excel, or XML documents</div>
+        </div>
+        <div style="display:flex;gap:10px">
+          <button class="btn btn-secondary" onclick="document.getElementById('profile-import-input').click()">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+            Import Profile
+          </button>
+          <input type="file" id="profile-import-input" accept=".json" style="display:none" onchange="importProfile(event)">
+          <button class="btn btn-primary" onclick="showCreateProfileModal()">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+            New Profile
+          </button>
+        </div>
+      </div>
+      <div class="screen-body">
+        <div class="profiles-layout">
+          <div>
+            <div class="section-title" style="margin-bottom:10px">Profiles</div>
+            <div class="profiles-list" id="profiles-list"></div>
+          </div>
+          <div>
+            <div class="section-title" style="margin-bottom:10px" id="editor-title">Select a Profile to Edit</div>
+            <div id="profile-editor-container">
+              <div class="empty-state">
+                <div class="empty-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
+                </div>
+                <div class="empty-title">No Profile Selected</div>
+                <div class="empty-desc">Select a profile from the list or create a new one to edit tag mappings</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── OUTPUT SCREEN ── -->
+    <div id="screen-output" class="screen">
+      <div class="screen-header">
+        <div>
+          <div class="screen-title">XML Output</div>
+          <div class="screen-subtitle">Generated XML body content — ready to paste into your document</div>
+        </div>
+        <div style="display:flex;gap:10px">
+          <button class="btn btn-secondary" onclick="navigate('review')">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+            Back to Review
+          </button>
+          <button class="btn btn-primary" onclick="navigate('upload')">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+            New Project
+          </button>
+        </div>
+      </div>
+      <div class="screen-body" style="padding:20px 24px">
+        <div class="output-layout" style="height:calc(100vh - 148px)">
+          <div class="xml-viewer">
+            <div class="xml-toolbar">
+              <span class="card-title">Generated XML Body</span>
+              <div style="display:flex;gap:7px;margin-left:auto">
+                <button class="btn btn-secondary btn-sm" onclick="copyXML()">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
+                  Copy
+                </button>
+                <button class="btn btn-primary btn-sm" onclick="downloadXML()">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                  Download XML
+                </button>
+              </div>
+            </div>
+            <div class="xml-content" id="xml-display">
+              <span style="color:var(--text-muted)">No XML generated yet. Go to Review &amp; Edit and click Generate XML.</span>
+            </div>
+          </div>
+          <div class="output-info">
+            <div class="info-card">
+              <div class="info-card-title">Summary</div>
+              <div class="info-row"><span>Total Blocks</span><strong id="out-blocks">0</strong></div>
+              <div class="info-row"><span>Pages</span><strong id="out-pages">0</strong></div>
+              <div class="info-row"><span>Client Profile</span><strong id="out-profile">None</strong></div>
+              <div class="info-row"><span>File</span><strong id="out-filename" style="font-size:11px;max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">—</strong></div>
+            </div>
+            <div class="info-card">
+              <div class="info-card-title">Tag Distribution</div>
+              <div id="tag-distribution"></div>
+            </div>
+            <div class="info-card">
+              <div class="info-card-title">Actions</div>
+              <div class="action-list">
+                <button class="btn btn-secondary w-full" onclick="copyXML()">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
+                  Copy to Clipboard
+                </button>
+                <button class="btn btn-primary w-full" onclick="downloadXML()">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                  Download .xml File
+                </button>
+                <button class="btn btn-ghost w-full" onclick="navigate('review')">Edit Classifications</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- ===== CREATE/EDIT PROFILE MODAL ===== -->
+<div class="modal-overlay" id="create-profile-modal" onclick="if(event.target===this)closeModal('create-profile-modal')">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="profile-modal-title">Create Client Profile</div>
+      <button class="btn btn-ghost btn-sm" onclick="closeModal('create-profile-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">Client / Profile Name *</label>
+        <input type="text" class="form-input" id="new-profile-name" placeholder="e.g., Oxford University Press">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">
+          Upload Tag Reference Document
+          <span style="color:var(--text-muted);font-weight:400"> — optional, or fill manually below</span>
+        </label>
+        <div class="doc-upload-area" id="tag-doc-drop"
+             onclick="document.getElementById('tag-doc-input').click()"
+             ondragover="handleTagDocDragOver(event)"
+             ondragleave="handleTagDocDragLeave(event)"
+             ondrop="handleTagDocDrop(event)">
+          <input type="file" id="tag-doc-input" style="display:none" onchange="handleTagDocSelect(event)">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" style="width:28px;height:28px;color:var(--text-muted);margin-bottom:8px">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+          </svg>
+          <div style="font-size:12.5px;color:var(--text-secondary);margin-bottom:8px">
+            Drop tag reference document here or click to browse
+          </div>
+          <div style="font-size:11px;color:var(--text-muted);margin-bottom:6px">
+            Excel: 2-column table (Content Type | Tag Name)<br>
+            Word: Table or lines like "Title: &lt;title&gt;"<br>
+            XML: &lt;mapping type="title" tag="head1"/&gt;
+          </div>
+          <div class="supported-formats">
+            <span class="format-badge docx">DOCX</span>
+            <span class="format-badge xlsx">XLSX / XLS</span>
+            <span class="format-badge xml">XML</span>
+          </div>
+          <div id="tag-doc-status" style="margin-top:10px;font-size:12px;color:var(--success);font-weight:500"></div>
+        </div>
+      </div>
+
+      <div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+          <label class="form-label" style="margin:0">Tag Mappings</label>
+          <button class="btn btn-secondary btn-sm" type="button" onclick="addModalCustomTagRow()" title="Add tag row" style="padding:0 10px;font-size:18px;line-height:1">+</button>
+        </div>
+        <table class="tag-table" style="border-radius:var(--radius-sm);overflow:hidden;border:1px solid var(--border)">
+          <thead>
+            <tr>
+              <th>Label / Key</th>
+              <th>XML Tag Name (no &lt; &gt;)</th>
+            </tr>
+          </thead>
+          <tbody id="modal-custom-tags-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('create-profile-modal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveNewProfile()">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+        Save Profile
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== TOAST CONTAINER ===== -->
+<div class="toast-container" id="toast-container"></div>
+
+<!-- ===== CDN LIBRARIES ===== -->
+<script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mammoth@1.6.0/mammoth.browser.min.js"></script>
+<script src="https://unpkg.com/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

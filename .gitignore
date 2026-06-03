@@ -1,0 +1,17 @@
+# Claude Code session files
+.claude/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor directories
+.vscode/
+.idea/
+
+# Temporary unpack directories (created by docx skill)
+*_unpacked/
+
+# Log files
+*.log
